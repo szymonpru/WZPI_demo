@@ -1,6 +1,7 @@
 from flask import Flask, send_from_directory
 from datetime import datetime
 app = Flask(__name__)
+import os
 
 @app.route('/files/<path:path>')
 def send_js(path):
@@ -8,13 +9,12 @@ def send_js(path):
 
 @app.route('/')
 def homepage():
-    the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
+    kaczki = os.listdir('files')
+    file_list = ['<a href="/files/{pet}">{pet}</a>'.format(pet=x) for x in kaczki]
 
-    return """
-    <h1>Hello heroku</h1>
-    <p>It is currently {time}.</p>
-	<img src="/files/hoppo.jpg"/>
-    """.format(time=the_time)
+    return """<h1>Demo WZPI</h1>
+    <h3>Lista zwierząt</h3>
+    """ + '<br>'.join(file_list)
 
 if __name__ == '__main__':
     app.run(debug=False, use_reloader=True)
